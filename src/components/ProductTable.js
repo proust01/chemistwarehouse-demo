@@ -12,18 +12,20 @@ export default function PageSizeCustomOptions() {
   const [products, setProducts] = React.useState(null);
   const url = 'https://wxxz7ruhxb.execute-api.ap-southeast-2.amazonaws.com/prod/products'
 
+  const fetchProducts = async () => {
+    const { data } = await axios.get(url)
+    if(data) {
+        setProducts(data)
+    }
+    console.log(products)
+  }
+
   useEffect(() => {
-      const fetchProducts = async () => {
-        const { data } = await axios.get(url)
-        if(data) {
-            setProducts(data)
-        }
-        console.log(products)
-      }
       fetchProducts()
   },[])
 
   const renderEditButton = (params) => {
+    //   console.log(params)
     return (
         <strong>
             <Button
@@ -31,13 +33,13 @@ export default function PageSizeCustomOptions() {
                 color="primary"
                 size="small"
                 style={{ marginLeft: 16 }}
-                onClick={() => {navigate(`/product/1`)}}
+                onClick={() => {navigate(`/product/${params.id}`)}}
             >
                 Edit
             </Button>
         </strong>
-    )
-}
+        )
+    }
   const renderDeleteButton = (params) => {
     return (
         <strong>
@@ -48,13 +50,29 @@ export default function PageSizeCustomOptions() {
                 style={{ marginLeft: 16 }}
                 onClick={() => {
                     console.log('clicked')
+                    deleteItem(params.id)
                 }}
             >
                 Delete
             </Button>
         </strong>
-    )
-}
+        )
+    }
+
+    const deleteItem = async (productId) => {
+        try {
+
+            const url = `https://wxxz7ruhxb.execute-api.ap-southeast-2.amazonaws.com/prod/product/n/${productId}`
+            const res = await axios.delete(url)
+            console.log(res)
+            
+            fetchProducts()
+
+            // navigate('/')
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
 //   const { data } = useDemoData({
 //     dataSet: 'Commodity',

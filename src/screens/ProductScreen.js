@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import Box from '@mui/material/Box';
@@ -15,10 +15,30 @@ import axios from 'axios'
 
 export default function ProductScreen() {
   let navigate = useNavigate();
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const { productId } = useParams();
+  console.log(productId)
+  const { register, handleSubmit, watch, formState: { errors }, reset } = useForm();
   const [selected, setSelected] = React.useState(false);
+  const [product, setProduct] = React.useState(null);
   const [age, setAge] = React.useState('');
-  const url = 'https://wxxz7ruhxb.execute-api.ap-southeast-2.amazonaws.com/prod/product'
+  const url = `https://wxxz7ruhxb.execute-api.ap-southeast-2.amazonaws.com/prod/product/`
+  const fetchUrl = `https://wxxz7ruhxb.execute-api.ap-southeast-2.amazonaws.com/prod/product/n/${productId}`
+
+  const fetchProduct = async () => {
+    const { data } = await axios.get(fetchUrl)
+    if(data) {
+        setProduct(data.message.Items[0])
+        reset(data.message.Items[0])
+        setAge(data.message.Items[0].type)
+        setSelected(data.message.Items[0].active)
+    }
+    console.log(product)
+  }
+  
+  useEffect(() => {
+    fetchProduct()
+    
+},[])
 
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -39,9 +59,24 @@ export default function ProductScreen() {
     }
   }
 
+  const updateHandler = async (data) => {
+    console.log(data)
+
+    try {
+
+      delete data.exampleRequired
+      const res = await axios.patch(fetchUrl, data)
+      console.log(res)
+
+      navigate('/')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <div>
-      <form onSubmit={handleSubmit(submitHandler)}>
+      <form onSubmit={handleSubmit(productId? updateHandler : submitHandler)}>
         <Box
           sx={{
             width: 800,
@@ -51,10 +86,24 @@ export default function ProductScreen() {
           }}
         >
           <InputLabel id="demo-simple-select-label">Name</InputLabel>
-          <TextField fullWidth label="Name" id="fullWidth" margin="normal" {...register("name", { required: true })} />
+          <TextField 
+            fullWidth 
+            label="Name" 
+            id="fullWidth" 
+            margin="normal" 
+            // defaultValue={product?.name}
+            {...register("name", { required: true })} 
+          />
 
           <InputLabel id="demo-simple-select-label">Price</InputLabel>
-          <TextField fullWidth label="Price" id="fullWidth" margin="normal" {...register("price", { required: true })} />
+          <TextField 
+            fullWidth 
+            label="Price" 
+            id="fullWidth"
+            margin="normal"
+            // defaultValue={product?.price} 
+            {...register("price", { required: true })} 
+          />
           
           <InputLabel id="demo-simple-select-label">Type</InputLabel>
             <Select
@@ -62,6 +111,7 @@ export default function ProductScreen() {
               fullWidth
               labelId="demo-simple-select-label"
               id="demo-simple-select"
+              // defaultValue={product?.type}
               value={age}
               label="Type"
               onChange={handleChange}
@@ -76,6 +126,7 @@ export default function ProductScreen() {
           <InputLabel id="demo-simple-select-label">Active</InputLabel>
           <ToggleButton
             {...register("active")}
+            defaultValue={product?.active}
             value={selected}
             fullWidth
             selected={selected}
@@ -89,8 +140,8 @@ export default function ProductScreen() {
           </ToggleButton>
 
           <div>
-            <Button type='submit' variant="contained" style={{ margin: 10 }}>Submit</Button>
-            <Button variant="contained" color="error" onClick={() => {navigate(`/`)}}>Cancel</Button>
+            <Button type='submit' variant="contained" style={{ margin: 10 }}>{productId? "Update" : "Submit"}</Button>
+            <Button variant="contained" color="error" onClick={() => navigate(`/`)}>Cancel</Button>
           </div>
         </Box>
         
