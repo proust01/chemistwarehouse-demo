@@ -19,4 +19,4 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 **Note: Server is created with AWS Serverless Architecture.**
 
 See the server app code.\
-Open [https://github.com/proust01/sls_chemistwarehouse_backend_demo](chemistwarehouse_backend_demo) to view sever code.
+Open [chemistwarehouse_backend_demo](https://github.com/proust01/sls_chemistwarehouse_backend_demo) to view sever code.
