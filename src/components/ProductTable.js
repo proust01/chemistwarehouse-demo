@@ -10,9 +10,10 @@ export default function PageSizeCustomOptions() {
     let navigate = useNavigate();
   const [pageSize, setPageSize] = React.useState(5);
   const [products, setProducts] = React.useState(null);
-  const url = 'https://wxxz7ruhxb.execute-api.ap-southeast-2.amazonaws.com/prod/products'
+  const url = `${process.env.REACT_APP_SERVER_URL}/products`
 
   const fetchProducts = async () => {
+      console.log(url)
     const { data } = await axios.get(url)
     if(data) {
         setProducts(data)
@@ -62,7 +63,7 @@ export default function PageSizeCustomOptions() {
     const deleteItem = async (productId) => {
         try {
 
-            const url = `https://wxxz7ruhxb.execute-api.ap-southeast-2.amazonaws.com/prod/product/n/${productId}`
+            const url = `${process.env.REACT_APP_SERVER_URL}/product/n/${productId}`
             const res = await axios.delete(url)
             console.log(res)
             
