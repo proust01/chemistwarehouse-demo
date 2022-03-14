@@ -21,8 +21,8 @@ export default function ProductScreen() {
   const [selected, setSelected] = React.useState(false);
   const [product, setProduct] = React.useState(null);
   const [age, setAge] = React.useState('');
-  const url = `https://wxxz7ruhxb.execute-api.ap-southeast-2.amazonaws.com/prod/product/`
-  const fetchUrl = `https://wxxz7ruhxb.execute-api.ap-southeast-2.amazonaws.com/prod/product/n/${productId}`
+  const url = `${process.env.REACT_APP_SERVER_URL}/product/`
+  const fetchUrl = `${process.env.REACT_APP_SERVER_URL}/product/n/${productId}`
 
   const fetchProduct = async () => {
     const { data } = await axios.get(fetchUrl)
@@ -34,7 +34,7 @@ export default function ProductScreen() {
     }
     console.log(product)
   }
-  
+
   useEffect(() => {
     fetchProduct()
     
