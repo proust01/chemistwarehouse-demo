@@ -21,6 +21,7 @@ export default function PageSizeCustomOptions() {
     console.log(products)
   }
 
+  // fetch products on page render
   useEffect(() => {
       fetchProducts()
   },[])
@@ -75,14 +76,8 @@ export default function PageSizeCustomOptions() {
         }
     }
 
-//   const { data } = useDemoData({
-//     dataSet: 'Commodity',
-//     rowLength: 100,
-//     // maxColumns: 6,
-//   });
 
-//   console.log(data)
-
+  // create data object for MUI DataGrid rendering
   const data = {
       columns: [
           {field: "id", hide: true},

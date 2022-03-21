@@ -14,16 +14,19 @@ import Select from '@mui/material/Select';
 import axios from 'axios'
 
 export default function ProductScreen() {
+
   let navigate = useNavigate();
   const { productId } = useParams();
-  console.log(productId)
+  // console.log(productId)
   const { register, handleSubmit, watch, formState: { errors }, reset } = useForm();
   const [selected, setSelected] = React.useState(false);
   const [product, setProduct] = React.useState(null);
   const [age, setAge] = React.useState('');
+
   const url = `${process.env.REACT_APP_SERVER_URL}/product/`
   const fetchUrl = `${process.env.REACT_APP_SERVER_URL}/product/n/${productId}`
 
+  // Fetch Edit product data to render
   const fetchProduct = async () => {
     const { data } = await axios.get(fetchUrl)
     if(data) {
@@ -35,6 +38,7 @@ export default function ProductScreen() {
     console.log(product)
   }
 
+  // fetch a Product on page render
   useEffect(() => {
     fetchProduct()
     
@@ -44,6 +48,7 @@ export default function ProductScreen() {
     setAge(event.target.value);
   };
 
+  // Create product data
   const submitHandler = async (data) => {
 
     try {
@@ -59,6 +64,7 @@ export default function ProductScreen() {
     }
   }
 
+  // update product data
   const updateHandler = async (data) => {
     console.log(data)
 
@@ -74,6 +80,7 @@ export default function ProductScreen() {
     }
   }
 
+  // Used React Hook Form for form submit
   return (
     <div>
       <form onSubmit={handleSubmit(productId? updateHandler : submitHandler)}>

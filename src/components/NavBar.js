@@ -7,7 +7,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-// import MenuIcon from '@mui/icons-material/Menu';
 
 export default function ButtonAppBar() {
   let navigate = useNavigate();
@@ -23,14 +22,14 @@ export default function ButtonAppBar() {
             aria-label="menu"
             sx={{ mr: 2 }}
           >
-            {/* <MenuIcon /> */}
+
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', color: "white" }}>
               Chemist Warehouse
             </Link>
           </Typography>
-          {/* <Button color="inherit" onClick={() => console.log("clicked")} >Add</Button> */}
+
           <Button color="inherit" onClick={() => {navigate(`/product`)}} >Add</Button>
         </Toolbar>
       </AppBar>
