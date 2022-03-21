@@ -10,8 +10,10 @@ export default function PageSizeCustomOptions() {
     let navigate = useNavigate();
   const [pageSize, setPageSize] = React.useState(5);
   const [products, setProducts] = React.useState(null);
+
   const url = `${process.env.REACT_APP_SERVER_URL}/products`
 
+  // fetch method for all products data
   const fetchProducts = async () => {
       console.log(url)
     const { data } = await axios.get(url)
@@ -26,6 +28,7 @@ export default function PageSizeCustomOptions() {
       fetchProducts()
   },[])
 
+  // create Edit/Delete button for MUI DataGrid data rows
   const renderEditButton = (params) => {
     //   console.log(params)
     return (
@@ -61,6 +64,7 @@ export default function PageSizeCustomOptions() {
         )
     }
 
+    // delete item on button click
     const deleteItem = async (productId) => {
         try {
 
